@@ -4,4 +4,4 @@ app = create_app()  # Create the Flask app instance
 
 if __name__ == '__main__':
     # Run the app (debug mode)
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
