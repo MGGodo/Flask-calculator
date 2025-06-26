@@ -1,12 +1,8 @@
 from flask import Flask, request, jsonify, Blueprint, current_app
-from app.utils.helpers import get_numbers, save_in_col  # Import the helper function
+from app.utils.helpers import get_numbers, save_in_col  # Import the helper's function
 
 # Create a blueprint named 'calculator'
 calculator_bp = Blueprint('calculator', __name__)
-
-def get_numbers():
-    data = request.get_json()
-    return data["a"], data["b"]
 
 # Add two numbers
 @calculator_bp.route('/addition', methods=['POST'])

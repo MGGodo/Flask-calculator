@@ -1,5 +1,5 @@
 services:
-  server:
+  flask-app:
     build: 
       context: .
     container_name: calc-app

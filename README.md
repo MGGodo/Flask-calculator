@@ -1,30 +1,37 @@
-# 🧮 Flask Calculator API
+# 🧮 Calculator API (Flask / Docker Compose)
 
 This is a simple Flask-based API for performing basic arithmetic operations: addition, subtraction, multiplication, and division.
 
----
-
-## 🚀 How to Run This Project
-
-Follow these steps to set up and run the project locally.
+The app is fully containerized using **Docker Compose** and connects to a **MongoDB** instance also managed via Docker.
 
 ---
 
-### ✅ 1. Check Python Installation
+## 🚀 How to Run This Project with Docker Compose
 
-Make sure you have **Python 3.9 or later** installed:
+Follow the steps below to run the API using Docker Compose.
+
+---
+
+### ✅ 1. Prerequisites
+
+Make sure you have **Docker** and **Docker Compose** installed.
+
+To check your installation, run:
 
 ```bash
-python --version
+docker --version
+docker compose version
 ````
 
-You should see something like:
+You should see outputs like:
 
 ```
-Python 3.9.x
+Docker version 24.x.x, build xxxxx
+Docker Compose version v2.x.x
 ```
 
-If Python is not installed, download it from [https://www.python.org/downloads/](https://www.python.org/downloads/).
+If you don't have Docker installed, follow the official guide:
+👉 [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
 
 ---
 
@@ -32,49 +39,52 @@ If Python is not installed, download it from [https://www.python.org/downloads/]
 
 ```bash
 git clone https://github.com/MGGodo/Flask-calculator.git
-cd Flask-calculator.git
+cd Flask-calculator
 ```
 
 ---
 
-### 🛠️ 3. Create and Activate a Virtual Environment
+### 🧾 3. Create a `.env` File
 
-```bash
-# Create virtual environment
-python -m venv venv
+In the root directory, create a file named `.env` with the following content:
 
-# Activate it:
-# On Linux/macOS
-source venv/bin/activate
+```env
+# URI complete to connect Mongo with Flask
+MONGO_URI=mongodb://mongoadmin:adminmongo.@mongo:27017/
 
-# On Windows
-venv\Scripts\activate
+# Password and user for MongoDB container
+DB_USERNAME=mongoadmin
+DB_PASSWORD=adminmongo.
 ```
+
+> 🔒 **Note:** Do not share this file publicly as it contains sensitive credentials.
 
 ---
 
-### 📦 4. Install Dependencies
+### 🐳 4. Start the Services with Docker Compose
 
-Install the required packages from `requirements.txt`:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### ▶️ 5. Run the Application
-
-Run the Flask app using:
+Use the following command to build and start both the Flask app and MongoDB:
 
 ```bash
-python run.py
+docker compose up --build -d
 ```
 
-You should see output indicating the app is running on:
+* `--build`: Rebuilds the images before starting.
+* `-d`: Runs containers in the background (detached mode).
 
+Once running, the API will be available at:
+📍 `http://127.0.0.1:5000/`
+
+To view logs:
+
+```bash
+docker compose logs -f
 ```
-http://127.0.0.1:5000/
+
+To stop the services:
+
+```bash
+docker compose down
 ```
 
 ---
@@ -93,7 +103,7 @@ http://127.0.0.1:5000/
 }
 ```
 
-5. Try any of these endpoints:
+Available endpoints:
 
 | Endpoint          | Description                          |
 | ----------------- | ------------------------------------ |
@@ -128,4 +138,32 @@ Example test:
 
 ---
 
+## 🧹 Useful Docker Compose Commands
 
+List running containers:
+
+```bash
+docker compose ps
+```
+
+Rebuild containers after code changes:
+
+```bash
+docker compose up --build -d
+```
+
+Stop and remove containers, networks, and volumes:
+
+```bash
+docker compose down
+```
+
+---
+
+## 📎 Notes
+
+* Port `5000` must be available on your machine.
+* The `flask-app` service will connect to MongoDB at the hostname `mongo` (from `docker-compose.yml`).
+* All dependencies are installed inside the container; no need for a virtual environment or manual `pip install`.
+
+---
